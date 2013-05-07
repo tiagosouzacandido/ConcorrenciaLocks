@@ -14,21 +14,25 @@ public class Agente extends Thread{
     private int contador = 0;
     private int tipo;
     private int deadline;
+    private int deadlineRestando;
     private Nodo nodo;
     private Malha malha;
-    public static boolean running = true;
+    private Barreira barreira;
+    //public static boolean running = true;
     
-    public Agente(int tipo, Malha malha, Nodo nodo, String nome,int deadline) {
+    public Agente(int tipo, Malha malha, Nodo nodo, Barreira barreira , String nome,int deadline) {
         this.setName(nome);
         this.nodo = nodo;
         this.malha = malha;
         this.tipo = tipo;
-        this.deadline=deadline;
+        this.deadline = deadline;
+        this.barreira = barreira;
+        this.deadlineRestando=this.deadline;
     }
     
     @Override
     public void run() {
-        while (running) {
+        while (deadline <= 1000) {
             try {
                 Nodo nodo1 = malha.getNodo(nodo.getCaminho(0));
                 Nodo nodo2 = malha.getNodo(nodo.getCaminho(1));
@@ -43,11 +47,20 @@ public class Agente extends Thread{
                 }
                 System.out.println(getName() + " vai para o nodo " + nodo.getNumeroNodo() + ".");
                 Thread.sleep(100);
-                deadline=deadline-100;
+                deadlineRestando -= 100;
                 int coletadas = nodo.consomeRecursos(this.tipo);
-                deadline=deadline-coletadas;
+                deadlineRestando -= coletadas;
                 contador += coletadas;
-                System.out.println(getName() + " consumiu " + contador + " recursos.");             
+                System.out.println(getName() + " consumiu " + contador + " recursos.");  
+                if(nodo.getNumeroNodo() == 0 || deadlineRestando<=100){
+                    nodo = malha.getNodo(0);
+                    System.out.println(" ------ " + getName() + " chegou no nodo " + nodo.getNumeroNodo() + ". ----- ");
+                    contador = 0;
+                    deadline += 100;
+                    deadlineRestando = deadline;
+                    System.out.println("Deadline do " + getName() + " foi para " + deadline + ".");
+                    barreira.Chegou();
+                }
             } catch (InterruptedException e) {
             }
         }

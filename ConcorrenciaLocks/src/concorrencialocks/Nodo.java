@@ -30,36 +30,32 @@ public class Nodo {
         int numNodo = caminho[posicao];
         return numNodo;
     }
-    
-    public int getCaminho(int index){
+
+    public int getCaminho(int index) {
         return caminho[index];
     }
-    
-    public int getQuantRecursos(int index){
+
+    public int getQuantRecursos(int index) {
         return recursos[index];
     }
 
     public int consomeRecursos(int tipoAgente) throws InterruptedException {
         lock.lock();
         try {
-            int coletadas = 0;
-            while (recursos[tipoAgente] > 0) {
-                recursos[tipoAgente]--;
-                coletadas++;
-                Thread.sleep(1);
-            }
+            int coletadas;
+            coletadas = recursos[tipoAgente];
+            Thread.sleep(recursos[tipoAgente]);
             return coletadas;
         } finally {
             lock.unlock();
-            
         }
     }
-    
-    public ReentrantLock getLock(){
+
+    public ReentrantLock getLock() {
         return this.lock;
     }
-    
-    public int getNumeroNodo(){
+
+    public int getNumeroNodo() {
         return this.numeroNodo;
     }
 }

@@ -17,10 +17,11 @@ public class ConcorrenciaLocks {
         // TODO code application logic here
         
         Malha malha = new Malha();
+        Barreira barreira = new Barreira(3);
         
-        Agente preguicoso = new Agente(0, malha, malha.getNodo(0), "Agente Preguiçoso",200);
-        Agente ponderado = new Agente(1, malha, malha.getNodo(0), "Agente Ponderado",200);
-        Agente guloso = new Agente(2, malha, malha.getNodo(0), "Agente Guloso",200);
+        Agente preguicoso = new Agente(0, malha, malha.getNodo(0), barreira, "Agente Preguiçoso", 200);
+        Agente ponderado = new Agente(1, malha, malha.getNodo(0), barreira, "Agente Ponderado", 200);
+        Agente guloso = new Agente(2, malha, malha.getNodo(0), barreira, "Agente Guloso", 200);
         
         preguicoso.start();
         ponderado.start();
